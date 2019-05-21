@@ -1,0 +1,15 @@
+## build image
+```
+docker build -t open_nsfw .
+```
+
+## run
+```
+docker run --rm --name my_open_nsfw -p 18080:8080 -v `pwd`:/opt/open_nsfw-- open_nsfw
+docker run --rm -d --name my_open_nsfw -p 18080:8080 -v `pwd`:/opt/open_nsfw-- open_nsfw
+```
+
+## example
+```
+curl -d 'url=https://i.imgur.com/RSgzOIj.jpg' localhost:18080
+```
