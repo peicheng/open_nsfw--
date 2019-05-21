@@ -2,3 +2,4 @@ aiodns
 aiohttp
 cchardet
 uvloop
+sqlitedict

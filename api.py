@@ -9,6 +9,7 @@ from aiohttp.web import HTTPBadRequest, HTTPNotFound, HTTPUnsupportedMediaType
 
 from classify_nsfw import caffe_preprocess_and_compute, load_model
 
+from sqlitedict import SqliteDict
 
 nsfw_net, caffe_transformer = load_model()
 
@@ -29,9 +30,13 @@ class API(web.View):
         request = self.request
         data = await request.post()
         try:
+            mydict = SqliteDict('./my_db.sqlite', autocommit=True)
+            if mydict.get(data["url"]) is not None:
+                return web.Response(text=str(mydict.get(data["url"])))
             image = await fetch(session, data["url"])
             nsfw_prob = classify(image)
             text = nsfw_prob.astype(str)
+            mydict[data["url"]] = text
             return web.Response(text=text)
         except KeyError:
             return HTTPBadRequest(text="Missing `url` POST parameter")
