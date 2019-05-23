@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-setuptools \
     python3-wheel \
+    sqlite3 \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/open_nsfw--
@@ -25,6 +26,6 @@ EXPOSE 8080
 
 RUN groupadd -r open_nsfw && useradd --no-log-init -r -g open_nsfw open_nsfw
 
-USER open_nsfw
+# USER open_nsfw
 
 ENTRYPOINT ["python3", "api.py"]
